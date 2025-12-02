@@ -1,13 +1,30 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="styles.css">
-  <title>War</title>
-</head>
-<body>
-  
-  <script src="script.js"></script>
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Exo+2:wght@300&display=swap"
+      rel="stylesheet"
+    />
+    <title>War</title>
+  </head>
+  <body>
+    <header class="top">
+      <button id="new-deck">New Deck</button>
+      <p id="remaining"></p>
+    </header>
+    <h1 id="title">Game of War</h1>
+    <h2>Computer score: 0</h2>
+    <div id="cards">
+      <div class="card-slot"></div>
+      <div class="card-slot"></div>
+    </div>
+    <h2 id="my-score">My score: 0</h2>
+<button id="draw-cards" class="draw">Draw</button>
+
+    <script src="script.js"></script>
+  </body>
 </html>
