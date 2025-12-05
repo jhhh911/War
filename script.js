@@ -1,14 +1,21 @@
 let deckId;
 let compCard = "";
 let userCard = "";
-let compScorecard = document.getElementById('comp-score')
-let myScorecard = document.getElementById('my-score')
+const compScorecard = document.getElementById("comp-score");
+const myScorecard = document.getElementById("my-score");
+let compScore = 0;
+let userScore = 0;
+const drawCards = document.getElementById("draw-cards");
+const cardsRemaining = document.getElementById("cards-remaining");
 
 function handleClick() {
   fetch("https://apis.scrimba.com/deckofcards/api/deck/new/shuffle/")
     .then(res => res.json())
     .then(data => {
       deckId = data.deck_id;
+      showRemainingCards(data);
+      drawCards.disabled = false;
+      resetScores();
     });
 }
 
@@ -31,11 +38,12 @@ function drawNewCards() {
           compCard,
           userCard
         );
+        showRemainingCards(data);
       });
   }
 }
 
-document.getElementById("draw-cards").addEventListener("click", drawNewCards);
+drawCards.addEventListener("click", drawNewCards);
 
 function determineWinner(card1, card2) {
   const cardArray = [
@@ -56,12 +64,33 @@ function determineWinner(card1, card2) {
   const compValue = cardArray.findIndex(i => card1 === i);
   const userValue = cardArray.findIndex(i => card2 === i);
   if (compValue > userValue) {
+    compScore++;
+    compScorecard.innerHTML = `Computer score: ${compScore}`;
     return "The computer wins!";
   } else if (compValue < userValue) {
+    userScore++;
+    myScorecard.innerHTML = `My score: ${userScore}`;
     return "You win!";
   } else if (compValue === userValue) {
     return "War!";
   } else {
     return "error!";
   }
+}
+
+function showRemainingCards(input) {
+  cardsRemaining.innerHTML = `Cards Remaining: ${input.remaining}`;
+  if (!input.remaining) {
+    drawCards.disabled = true;
+  }
+}
+
+function resetScores() {
+  compScore = 0;
+  userScore = 0;
+  compScorecard.innerHTML = `Computer score: ${compScore}`;
+  myScorecard.innerHTML = `My score: ${userScore}`;
+  document
+    .querySelectorAll(".card-slot")
+    .forEach(slot => (slot.innerHTML = ""));
 }
