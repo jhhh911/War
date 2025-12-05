@@ -7,6 +7,7 @@ let compScore = 0;
 let userScore = 0;
 const drawCards = document.getElementById("draw-cards");
 const cardsRemaining = document.getElementById("cards-remaining");
+const finalResult = document.getElementById('title')
 
 function handleClick() {
   fetch("https://apis.scrimba.com/deckofcards/api/deck/new/shuffle/")
@@ -65,11 +66,11 @@ function determineWinner(card1, card2) {
   const userValue = cardArray.findIndex(i => card2 === i);
   if (compValue > userValue) {
     compScore++;
-    compScorecard.innerHTML = `Computer score: ${compScore}`;
+    compScorecard.textContent = `Computer score: ${compScore}`;
     return "The computer wins!";
   } else if (compValue < userValue) {
     userScore++;
-    myScorecard.innerHTML = `My score: ${userScore}`;
+    myScorecard.textContent = `My score: ${userScore}`;
     return "You win!";
   } else if (compValue === userValue) {
     return "War!";
@@ -82,6 +83,13 @@ function showRemainingCards(input) {
   cardsRemaining.innerHTML = `Cards Remaining: ${input.remaining}`;
   if (!input.remaining) {
     drawCards.disabled = true;
+    if (compScore > userScore) {
+      finalResult.textContent = `The computer has won the war!`
+    } else if (compScore < userScore) {
+      finalResult.textContent = `You have won the war!`
+    } else {
+      finalResult.textContent = 'The war is a draw!'
+    }
   }
 }
 
