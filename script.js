@@ -35,7 +35,7 @@ function drawNewCards() {
             ? (compCard = data.cards[i].value)
             : (userCard = data.cards[i].value);
         });
-        document.getElementById("result").innerHTML = determineWinner(
+        finalResult.innerHTML = determineWinner(
           compCard,
           userCard
         );
