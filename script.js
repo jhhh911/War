@@ -7,40 +7,35 @@ let compScore = 0;
 let userScore = 0;
 const drawCards = document.getElementById("draw-cards");
 const cardsRemaining = document.getElementById("cards-remaining");
-const finalResult = document.getElementById('title')
+const finalResult = document.getElementById("title");
 
-function handleClick() {
-  fetch("https://apis.scrimba.com/deckofcards/api/deck/new/shuffle/")
-    .then(res => res.json())
-    .then(data => {
-      deckId = data.deck_id;
-      showRemainingCards(data);
-      drawCards.disabled = false;
-      resetScores();
-    });
+async function handleClick() {
+  const res = await fetch(
+    "https://apis.scrimba.com/deckofcards/api/deck/new/shuffle/"
+  );
+  const data = await res.json();
+  showRemainingCards(data);
+  deckId = data.deck_id;
+  drawCards.disabled = false;
+  resetScores();
 }
 
 document.getElementById("new-deck").addEventListener("click", handleClick);
 
-function drawNewCards() {
+async function drawNewCards() {
   if (deckId) {
-    fetch(
+    const res = await fetch(
       `https://apis.scrimba.com/deckofcards/api/deck/${deckId}/draw/?count=2`
-    )
-      .then(res => res.json())
-      .then(data => {
-        document.querySelectorAll(".card-slot").forEach((slot, i) => {
-          slot.innerHTML = `<img src='${data.cards[i].image}' class='card'>`;
-          i === 0
-            ? (compCard = data.cards[i].value)
-            : (userCard = data.cards[i].value);
-        });
-        finalResult.innerHTML = determineWinner(
-          compCard,
-          userCard
-        );
-        showRemainingCards(data);
-      });
+    );
+    const data = await res.json();
+    document.querySelectorAll(".card-slot").forEach((slot, i) => {
+      slot.innerHTML = `<img src='${data.cards[i].image}' class='card'>`;
+      i === 0
+        ? (compCard = data.cards[i].value)
+        : (userCard = data.cards[i].value);
+    });
+    finalResult.innerHTML = determineWinner(compCard, userCard);
+    showRemainingCards(data);
   }
 }
 
@@ -84,11 +79,11 @@ function showRemainingCards(input) {
   if (!input.remaining) {
     drawCards.disabled = true;
     if (compScore > userScore) {
-      finalResult.textContent = `The computer has won the war!`
+      finalResult.textContent = `The computer has won the war!`;
     } else if (compScore < userScore) {
-      finalResult.textContent = `You have won the war!`
+      finalResult.textContent = `You have won the war!`;
     } else {
-      finalResult.textContent = 'The war is a draw!'
+      finalResult.textContent = "The war is a draw!";
     }
   }
 }
